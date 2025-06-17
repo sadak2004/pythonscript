@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Datasets Table</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 40px;
+      background-color: #f9f9f9;
+    }
+    h1 {
+      text-align: center;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      background-color: #fff;
+    }
+    th, td {
+      padding: 10px;
+      border: 1px solid #ccc;
+      text-align: left;
+    }
+    th {
+      background-color: #eee;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Datasets Summary</h1>
+  <div id="dataset-table">Loading dataset table...</div>
+
+  <script>
+    fetch('datasets_table.md')
+      .then(response => {
+        if (!response.ok) throw new Error('Failed to load datasets_table.md');
+        return response.text();
+      })
+      .then(md => {
+        const lines = md.trim().split('\n');
+        const header = lines[0].split('|').filter(Boolean).map(h => h.trim());
+        const rows = lines.slice(2).map(line => line.split('|').filter(Boolean).map(cell => cell.trim()));
+
+        let html = '<table><thead><tr>';
+        header.forEach(h => { html += `<th>${h}</th>`; });
+        html += '</tr></thead><tbody>';
+        rows.forEach(row => {
+          html += '<tr>';
+          row.forEach(cell => {
+            // If it's a Markdown link like [doi](https://...), convert to HTML link
+            const linkMatch = cell.match(/\[(.*?)\]\((.*?)\)/);
+            if (linkMatch) {
+              html += `<td><a href="${linkMatch[2]}" target="_blank">${linkMatch[1]}</a></td>`;
+            } else {
+              html += `<td>${cell}</td>`;
+            }
+          });
+          html += '</tr>';
+        });
+        html += '</tbody></table>';
+
+        document.getElementById('dataset-table').innerHTML = html;
+      })
+      .catch(error => {
+        document.getElementById('dataset-table').innerText = 'Failed to load dataset table.';
+        console.error(error);
+      });
+  </script>
+
+</body>
+</html>
