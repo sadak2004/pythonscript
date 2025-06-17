@@ -1,0 +1,6 @@
+{
+  "name": "City Air Quality",
+  "properties": ["PM2.5", "PM10", "NO2", "O3"],
+  "cite": "Johnson et al. (2022)",
+  "doi": "10.5678/efgh"
+}
