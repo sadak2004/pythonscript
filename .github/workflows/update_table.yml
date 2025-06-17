@@ -1,0 +1,28 @@
+name: Update Dataset Table
+
+on:
+  push:
+    paths:
+      - 'datasets/**'
+      - 'generate_table.py'
+  schedule:
+    - cron: '0 0 * * *'  # Runs every day at midnight UTC
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies (if any)
+        run: pip install --upgrade pip
+
+      - name: Run generate_table.py
+        run: python generate_table.py
