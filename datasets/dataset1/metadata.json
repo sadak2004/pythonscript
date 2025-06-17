@@ -1,0 +1,6 @@
+{
+  "name": "Global Weather Data",
+  "properties": ["temperature", "humidity", "wind speed"],
+  "cite": "Smith et al. (2023)",
+  "doi": "10.1234/abcd"
+}
